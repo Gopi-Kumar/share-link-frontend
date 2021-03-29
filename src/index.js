@@ -3,11 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createStore } from 'redux'
+import { reducer } from './redux-store/store'
+import { Provider } from 'react-redux'
 
+const initialState = {
+  percent:0,
+  fileUploadedStatus: true,
+  url : 'http://localhost:5000/',
+  
+}
+const store = createStore(reducer, initialState)
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 

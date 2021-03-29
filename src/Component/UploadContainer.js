@@ -1,7 +1,8 @@
 import React, { useRef }  from 'react'
-const UploadContainer = ()=>{
+const UploadContainer = (props)=>{
     let uploadedFile;
-    const baseUrl = "http://localhost:3000";
+    console.log(props)
+    const baseUrl = "http://localhost:5000";
     const uploadUrl = `${baseUrl}/api/files/`;
     const hiddenInputFile = useRef(null);
     const handleBrowse = () => {
@@ -15,7 +16,6 @@ const UploadContainer = ()=>{
         const xhr = new XMLHttpRequest();
         xhr.upload.onprogress = function(event){
             let percent = Math.round((100*event.loaded) / event.total);
-            console.log(percent);
         }
 
         xhr.upload.onerror = function(){
@@ -32,7 +32,6 @@ const UploadContainer = ()=>{
         }
         xhr.open("POST", uploadUrl);
         xhr.send(formData);
-
     }
     
     return (
