@@ -1,6 +1,5 @@
 const Header = (props)=>{
-    console.log(props.percent)
-    console.log("Hell")
+    
     return (
         <div className="header">
             <div className="logo">

@@ -1,7 +1,8 @@
-import React, { useRef }  from 'react'
-const UploadContainer = (props)=>{
-    let uploadedFile;
-    console.log(props)
+import React, { useRef } from 'react'
+import { connect } from 'react-redux'
+import { mapStateToProps, mapDispatchToProps } from '../redux-store/mapStore'
+const UploadContainer = (props) => {
+    var uploadedFile,response;
     const baseUrl = "http://localhost:5000";
     const uploadUrl = `${baseUrl}/api/files/`;
     const hiddenInputFile = useRef(null);
@@ -14,36 +15,42 @@ const UploadContainer = (props)=>{
         const formData = new FormData();
         formData.append("myfile", uploadedFile[0]);
         const xhr = new XMLHttpRequest();
-        xhr.upload.onprogress = function(event){
-            let percent = Math.round((100*event.loaded) / event.total);
+        xhr.upload.onprogress = function (event) {
+            let percent = Math.round((100 * event.loaded) / event.total);
+            props.updatePercent(percent);
         }
 
-        xhr.upload.onerror = function(){
-            console.log(`Error in upload:${xhr.status}` );
-            e.target.files.value='';
+        xhr.upload.onerror = function () {
+            console.log(`Error in upload:${xhr.status}`);
+            e.target.files.value = '';
         }
 
-        xhr.onreadystatechange = function(){
-            if(xhr.readyState === XMLHttpRequest.DONE){
-                var response = JSON.parse(xhr.responseText);
-                console.log(response);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                response = (JSON.parse(xhr.responseText)).file.toString();
                 console.log("file uploded");
+            }
+            if(response !== undefined){
+                console.log(response)
+                props.updateUrl(response);
+                console.log(props)
             }
         }
         xhr.open("POST", uploadUrl);
         xhr.send(formData);
     }
-    
     return (
         <div className="upload__container">
             <form action="">
                 <div className="drop__zone ondrop">
                     <p>Drag and drop your file here</p>
                     or <span id="browseBtn" onClick={handleBrowse}>Browse</span>
-                    <input type="file" ref={hiddenInputFile} onChange={handleChange} id="fileInput"/>
+                    <input type="file" ref={hiddenInputFile} onChange={handleChange} id="fileInput" />
                 </div>
             </form>
         </div>
     )
 }
-export default UploadContainer;
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(UploadContainer);

@@ -3,8 +3,8 @@ import Header from './Component/Header'
 import ProgressContainer from './Component/ProgressContainer'
 import ShareLinkContainer from './Component/ShareLinkContainer'
 import UploadContainer from './Component/UploadContainer'
-import {updatePercent, updateUrl, fileUploaded} from './redux-store/store'
 import { connect } from 'react-redux'
+import { mapStateToProps, mapDispatchToProps } from './redux-store/mapStore'
 
 function App(props) {
   let percent  = props.percent;
@@ -24,7 +24,7 @@ function App(props) {
     return (
       <div className="App">
         <Header/>
-        <UploadContainer/>
+        <UploadContainer hello={"gopp"}/>
         <ProgressContainer percent = {percent}/>
       </div>
     );
@@ -39,21 +39,5 @@ function App(props) {
   
 }
 
-const mapStateToProps = (state, ownPropw)=>{
-  return {
-    percent : state.percent,
-    url : state.url, 
-    fileUploaded : state.fileUploaded
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updatePercent : percent => dispatch(updatePercent(percent)),
-    updateUrl : url => dispatch(updateUrl(url)),
-    fileUploaded : d => dispatch(fileUploaded(d))
-  }
-}
-
-
 export default connect(mapStateToProps,mapDispatchToProps)(App);
+

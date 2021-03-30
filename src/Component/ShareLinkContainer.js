@@ -1,5 +1,6 @@
+import { connect } from 'react-redux'
+import { mapStateToProps, mapDispatchToProps } from '../redux-store/mapStore'
 const ShareLinkContainer = (props) => {
-    console.log(props.percent)
     const handleCopy = (e) => {
         let fileURL = document.querySelector("#fileURL");
         fileURL.select();
@@ -16,12 +17,5 @@ const ShareLinkContainer = (props) => {
     )
 }
 
-const mapStateToProps = (state, ownPropw) => {
-    return {
-        percent: state.percent,
-        url: state.url,
-        fileUploaded: state.fileUploaded
-    }
-}
 
-export default ShareLinkContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(ShareLinkContainer);
