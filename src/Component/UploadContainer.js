@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from '../redux-store/mapStore'
 const UploadContainer = (props) => {
     var uploadedFile,response;
-    const baseUrl = "http://localhost:5000";
+    const baseUrl = "https://filesharing-api.herokuapp.com/";
     const uploadUrl = `${baseUrl}/api/files/`;
     const hiddenInputFile = useRef(null);
     const handleBrowse = () => {
