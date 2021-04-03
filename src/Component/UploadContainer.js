@@ -15,6 +15,7 @@ const UploadContainer = (props) => {
         const formData = new FormData();
         formData.append("myfile", uploadedFile[0]);
         const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
         xhr.upload.onprogress = function (event) {
             let percent = Math.round((100 * event.loaded) / event.total);
             props.updatePercent(percent);
