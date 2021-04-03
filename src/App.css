@@ -79,7 +79,7 @@ body{
   background-color: var(--secondry-bg-color);
   border-radius:5px;
   color:black;
-  transform:scaleX(0.5);
+  transform:scaleX(1);
   transform-origin: left;
 }
 .progress__container .inner__container{
@@ -116,4 +116,16 @@ body{
   color:white;
   padding:0rem 0.5rem;
   cursor:pointer;
+}
+
+.animateBg{
+  animation: animateBg 2s infinite;
+}
+@keyframes animateBg{
+  0%{
+    transform : scaleX(0);
+  }
+  100%{
+    transform: scaleX(100);
+  }
 }
