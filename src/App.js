@@ -24,7 +24,7 @@ function App(props) {
     return (
       <div className="App">
         <Header/>
-        <UploadContainer hello={"gopp"}/>
+        <UploadContainer />
         <ProgressContainer percent = {percent}/>
       </div>
     );

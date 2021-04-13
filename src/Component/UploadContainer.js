@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from '../redux-store/mapStore'
 const UploadContainer = (props) => {
     var uploadedFile,response;
-    const baseUrl = "https://filesharing-api.herokuapp.com";
+    const baseUrl = "http://localhost:5000";
     const uploadUrl = `${baseUrl}/api/files/`;
     const hiddenInputFile = useRef(null);
     const handleBrowse = () => {
@@ -14,8 +14,12 @@ const UploadContainer = (props) => {
         console.log("uploading file")
         const formData = new FormData();
         formData.append("myfile", uploadedFile[0]);
+
         const xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
+        xhr.open("POST", uploadUrl);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        // xhr.withCredentials = true;
         xhr.upload.onprogress = function (event) {
             let percent = Math.round((100 * event.loaded) / event.total);
             props.updatePercent(percent);
@@ -25,30 +29,35 @@ const UploadContainer = (props) => {
             console.log(`Error in upload:${xhr.status}`);
             e.target.files.value = '';
         }
-
-        xhr.onreadystatechange = function () {
+        
+        xhr.upload.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
+                console.log(xhr.responseText);
                 response = (JSON.parse(xhr.responseText)).file.toString();
-                console.log("file uploded");
+                console.log("respone received");
+            }
+            if(xhr.readyState >= 400){
+                console.log("Failed");
+            }
+            if(xhr.readyState < 400){
+                console.log("yes");
             }
             if(response !== undefined){
                 console.log(response)
                 props.updateUrl(response);
                 console.log(props)
             }
+            console.log("file uploaded");
         }
-        xhr.open("POST", uploadUrl);
         xhr.send(formData);
     }
     return (
         <div className="upload__container">
-            <form action="">
                 <div className="drop__zone ondrop">
                     <p>Drag and drop your file here</p>
                     or <span id="browseBtn" onClick={handleBrowse}>Browse</span>
                     <input type="file" ref={hiddenInputFile} onChange={handleChange} id="fileInput" />
                 </div>
-            </form>
         </div>
     )
 }
