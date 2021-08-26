@@ -6,8 +6,8 @@ const Header = (props)=>{
                 <h1>shareLink</h1>
             </div>
             <div className="navbar">
-                <li>Nav Item1</li>
-                <li>Nav Item2</li>
+                <li>About</li>
+                <li>Support</li>
             </div>
         </div>
     )

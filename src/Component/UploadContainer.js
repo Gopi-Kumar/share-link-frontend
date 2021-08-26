@@ -1,62 +1,65 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from '../redux-store/mapStore'
 const UploadContainer = (props) => {
-    var uploadedFile,response;
-    const baseUrl = "http://localhost:5000";
-    const uploadUrl = `${baseUrl}/api/files/`;
-    const hiddenInputFile = useRef(null);
-    const handleBrowse = () => {
-        hiddenInputFile.current.click();
+    var uploadedFile;
+
+    function handleUpload(uploadedFile){
+        console.log(uploadedFile);
+        var data = new FormData();
+        data.append("myfile", uploadedFile);
+         
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function() {
+          if(this.readyState === 4) {
+            let res = JSON.parse(this.responseText);
+            props.updatePercentInStore(100);
+            props.updateUrlInStore(res.file);
+          }
+        });
+
+        xhr.open("POST", "http://localhost:5500/api/files");
+
+        xhr.send(data);
     }
+
     const handleChange = (e) => {
-        uploadedFile = e.target.files;
-        console.log("uploading file")
-        const formData = new FormData();
-        formData.append("myfile", uploadedFile[0]);
+        uploadedFile = e.target.files[0];
+        handleUpload(uploadedFile);
+    }
 
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", uploadUrl);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-        // xhr.withCredentials = true;
-        xhr.upload.onprogress = function (event) {
-            let percent = Math.round((100 * event.loaded) / event.total);
-            props.updatePercent(percent);
-        }
+    let onDragOver = (event) => {
+        // let event = e as Event;
+        event.target.classList.add("ondrop");
+        event.stopPropagation();
+        event.preventDefault();
+    }
 
-        xhr.upload.onerror = function () {
-            console.log(`Error in upload:${xhr.status}`);
-            e.target.files.value = '';
-        }
-        
-        xhr.upload.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                console.log(xhr.responseText);
-                response = (JSON.parse(xhr.responseText)).file.toString();
-                console.log("respone received");
-            }
-            if(xhr.readyState >= 400){
-                console.log("Failed");
-            }
-            if(xhr.readyState < 400){
-                console.log("yes");
-            }
-            if(response !== undefined){
-                console.log(response)
-                props.updateUrl(response);
-                console.log(props)
-            }
-            console.log("file uploaded");
-        }
-        xhr.send(formData);
+    let onDragEnter = (event) => {
+        event.stopPropagation();    
+    }
+
+    let  onFileDrop = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        let uploadedFile = event.dataTransfer.files[0];
+        handleUpload(uploadedFile);
     }
     return (
-        <div className="upload__container">
-                <div className="drop__zone ondrop">
+        <div className="upload__container" 
+            
+        >
+                <div className="drop__zone"
+                    onDragEnter={onDragEnter}
+                    onDragOver={onDragOver}
+                    onDrop={onFileDrop}
+                >
                     <p>Drag and drop your file here</p>
-                    or <span id="browseBtn" onClick={handleBrowse}>Browse</span>
-                    <input type="file" ref={hiddenInputFile} onChange={handleChange} id="fileInput" />
+                    or 
+                    <label htmlFor="fileInput" id="browseBtn">Browse</label>
+                    <input type="file" onChange={handleChange} id="fileInput" />
                 </div>
         </div>
     )

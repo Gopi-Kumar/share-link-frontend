@@ -13,9 +13,9 @@ export const mapStateToProps = (state, ownPropw) => {
 
 export const mapDispatchToProps = (dispatch) => {
     return {
-        updatePercent: percent => dispatch(updatePercent(percent)),
-        updateUrl: url => dispatch(updateUrl(url)),
-        fileUploaded: d => dispatch(fileUploaded(d))
+        updatePercentInStore: percent => dispatch(updatePercent(percent)),
+        updateUrlInStore: url => dispatch(updateUrl(url)),
+        fileUploadedInStore: d => dispatch(fileUploaded(d))
     }
 }
 

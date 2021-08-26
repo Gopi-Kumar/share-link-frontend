@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from '../redux-store/mapStore'
-// import { useRef } from 'react'
 const ProgressContainer =(props)=>{
     if(props.percent < 100){
         return(

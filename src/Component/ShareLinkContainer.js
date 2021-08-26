@@ -6,11 +6,14 @@ const ShareLinkContainer = (props) => {
         fileURL.select();
         document.execCommand("copy");
     }
+    function doNothing(){
+        
+    }
     return (
         <div className="share__link__container">
             <p className="expire">Link expires in 24 hrs</p>
             <div className="input__container">
-                <input type="text" id="fileURL"/>
+                <input type="text" id="fileURL" onChange={doNothing} value={props.url}/>
                 <button id="copuURLBtn" alt="copy to clipboard" onClick={handleCopy}>Copy</button>
             </div>
         </div>

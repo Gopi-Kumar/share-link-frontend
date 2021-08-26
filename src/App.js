@@ -13,13 +13,14 @@ function App(props) {
       percent = "File Uploaded"
       return (
         <div className="App">  
-          <Header store={props}/>
+          <Header/>
           <UploadContainer/>
           <ProgressContainer percent = {percent}/>
           <ShareLinkContainer value={props.url}/>
         </div>
       )
     }
+  }else if(percent < 100 && percent !== 0){
     percent  = `Uploading... ${props.percent}%`
     return (
       <div className="App">
