@@ -20,7 +20,7 @@ const UploadContainer = (props) => {
           }
         });
 
-        xhr.open("POST", "http://localhost:5500/api/files");
+        xhr.open("POST", "https://filesharing-api.herokuapp.com/api/files");
 
         xhr.send(data);
     }
